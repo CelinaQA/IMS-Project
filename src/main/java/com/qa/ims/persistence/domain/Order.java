@@ -3,20 +3,27 @@ package com.qa.ims.persistence.domain;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Order extends Customer{
+public class Order {
 	
 	private Long id;
-	private Long customer_id = super.getId();
+	private Long customer_id;
 	private Date date_placed = Calendar.getInstance().getTime();
 	
-	public Order(String firstName, String surname, Long id, Long customer_id) {
-		super(firstName, surname);
+	public Order(Long id, Long customer_id, Date date_placed) {
+		super();
+		this.id = id;
+		this.customer_id = customer_id;
+		this.date_placed = date_placed;
+	}
+
+	public Order(Long id, Long customer_id) {
+		super();
 		this.id = id;
 		this.customer_id = customer_id;
 	}
 	
-	public Order(String firstName, String surname, Long customer_id) {
-		super(firstName, surname);
+	public Order(Long customer_id) {
+		super();
 		this.customer_id = customer_id;
 	}
 
