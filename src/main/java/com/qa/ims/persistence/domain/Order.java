@@ -71,16 +71,15 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
-				printItemsOrdered() + "\n"+ itemsOrdered.keySet();
+				printItemsOrdered();
 	}
 	
 	public String printItemsOrdered() {
 		String str = "";
 		
 		for (Long key : itemsOrdered.keySet()) {
-			str = "Item ID: " + key + "  Quantity: " + itemsOrdered.get(key);
+			str += "Item ID: " + key + "  Quantity: " + itemsOrdered.get(key) + "\n";
 		} 
-		
 		return str;
 	}
 

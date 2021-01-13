@@ -21,6 +21,13 @@ public class Runner {
 		itemsOrdered.put(789L, 9);
 		Order order = new Order(1L, itemsOrdered);
 		System.out.println(order);
+//		System.out.println("-----------------");
+//		String str = "";
+//		
+//		for (Long i : itemsOrdered.keySet()) {
+//			str += "Item ID: " + i + "  Quantity: " + itemsOrdered.get(i);
+//		} 
+//		System.out.println(str);
 	}
 
 }
