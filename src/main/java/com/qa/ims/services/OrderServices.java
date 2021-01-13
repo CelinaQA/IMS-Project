@@ -13,21 +13,16 @@ public class OrderServices implements CrudServices<Order>{
 		return orderDao.readAll();
 	}
 
-	
 	public Order create(Order order) {
 		return orderDao.create(order);
 	}
-
 
 	public Order update(Order order) {
 		return orderDao.update(order);
 	}
 
-
 	public void delete(Long id) {		
 		orderDao.delete(id);
 	}
 	
-	
-
 }
