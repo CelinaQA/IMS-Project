@@ -8,6 +8,10 @@ import com.qa.ims.persistence.domain.Order;
 public class OrderServices implements CrudServices<Order>{
 	
 	private Dao<Order> orderDao;
+	
+	public OrderServices(Dao<Order> orderDao) {
+		this.orderDao = orderDao;
+	}
 
 	public List<Order> readAll() {
 		return orderDao.readAll();
