@@ -2,12 +2,16 @@ package com.qa.ims.persistence.domain;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Order {
 	
 	private Long id;
 	private Long customer_id;
 	private Date date_placed = Calendar.getInstance().getTime();
+	
+	//Orderline
+	private HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
 	
 	public Order(Long id, Long customer_id, Date date_placed) {
 		super();
@@ -50,6 +54,14 @@ public class Order {
 	public void setDate_placed(Date date_placed) {
 		this.date_placed = date_placed;
 	}
+	
+	public HashMap<Long, Integer> getItemsOrdered() {
+		return itemsOrdered;
+	}
+
+	public void setItemsOrdered(HashMap<Long, Integer> itemsOrdered) {
+		this.itemsOrdered = itemsOrdered;
+	}
 
 	@Override
 	public String toString() {
@@ -63,6 +75,7 @@ public class Order {
 		result = prime * result + ((customer_id == null) ? 0 : customer_id.hashCode());
 		result = prime * result + ((date_placed == null) ? 0 : date_placed.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((itemsOrdered == null) ? 0 : itemsOrdered.hashCode());
 		return result;
 	}
 
@@ -90,7 +103,12 @@ public class Order {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (itemsOrdered == null) {
+			if (other.itemsOrdered != null)
+				return false;
+		} else if (!itemsOrdered.equals(other.itemsOrdered))
+			return false;
 		return true;
 	}
-	
+
 }
