@@ -12,23 +12,28 @@ public class Order {
 	
 	//Orderline
 	private HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
-	
-	public Order(Long id, Long customer_id, Date date_placed) {
+
+	//to read
+	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered) {
 		super();
 		this.id = id;
 		this.customer_id = customer_id;
 		this.date_placed = date_placed;
+		this.itemsOrdered = itemsOrdered;
 	}
-
+	
+	//to update customer id only
 	public Order(Long id, Long customer_id) {
 		super();
 		this.id = id;
 		this.customer_id = customer_id;
 	}
-	
-	public Order(Long customer_id) {
+
+	//to create and to update items ordered
+	public Order(Long customer_id, HashMap<Long, Integer> itemsOrdered) {
 		super();
 		this.customer_id = customer_id;
+		this.itemsOrdered = itemsOrdered;
 	}
 
 	public Long getId() {
@@ -65,7 +70,18 @@ public class Order {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", customer_id=" + customer_id + ", date_placed=" + date_placed + "]";
+		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
+				printItemsOrdered() + "\n"+ itemsOrdered.keySet();
+	}
+	
+	public String printItemsOrdered() {
+		String str = "";
+		
+		for (Long key : itemsOrdered.keySet()) {
+			str = "Item ID: " + key + "  Quantity: " + itemsOrdered.get(key);
+		} 
+		
+		return str;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
 
-public class OrderDaoMysql implements Dao<Order>{
+public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 	
@@ -22,7 +22,7 @@ public class OrderDaoMysql implements Dao<Order>{
 		Long id = resultSet.getLong("order_id");
 		Long customer_id = resultSet.getLong("customer_id");
 		Date date_placed = resultSet.getDate("date_placed");
-		return new Order(id, customer_id, date_placed);
+		return new Order(id, customer_id, date_placed, null);
 	}
 	
 	@Override
@@ -104,6 +104,38 @@ public class OrderDaoMysql implements Dao<Order>{
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
 		}
+	}
+
+	@Override
+	public Order updateDelItem(Order order) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("UPDATE orders SET customer_id ='" + order.getCustomer_id() + "' WHERE order_id =" + order.getId());
+			return readOrder(order.getId());
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public Order updateAddItem(Order order) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("INSERT INTO orderlines(customer_id,item_id,quantity) VALUES('" + order.getCustomer_id() + + +"')");
+			return readLatest();
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public Order updateItemQty(Order order) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
