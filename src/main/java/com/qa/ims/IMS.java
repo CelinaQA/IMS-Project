@@ -8,10 +8,10 @@ import com.qa.ims.controller.CrudController;
 import com.qa.ims.controller.CustomerController;
 import com.qa.ims.controller.ItemController;
 import com.qa.ims.persistence.dao.CustomerDaoMysql;
-import com.qa.ims.persistence.dao.ItemDAO;
+import com.qa.ims.persistence.dao.ItemDaoMysql;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.services.CustomerServices;
-import com.qa.ims.services.ItemService;
+import com.qa.ims.services.ItemServices;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
 
@@ -45,8 +45,9 @@ public class IMS {
 				doAction(customerController, action);
 				break;
 			case ITEM:
-				ItemController controller = new ItemController(new ItemService(new ItemDAO()));
-				doAction(controller, action);
+				ItemController itemController = new ItemController(
+						new ItemServices(new ItemDaoMysql()));
+				doAction(itemController, action);
 				break;
 			case ORDER:
 				break;
