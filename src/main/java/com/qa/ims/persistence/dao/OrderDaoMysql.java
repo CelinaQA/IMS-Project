@@ -64,7 +64,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readOrder(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id);) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id+";");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -104,7 +104,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order updateDelItem(Order order, Long item_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("UPDATE orders SET customer_id ='" + order.getCustomer_id() + "' WHERE order_id =" + order.getId());
+			statement.executeUpdate("DELETE FROM orderlines WHERE order_id=" + order.getId() + "AND item_id="+ item_id + ";");
 			return readOrder(order.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
@@ -117,7 +117,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order updateAddItem(Order order, Long item_id, Integer item_quantity) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orderlines(customer_id,item_id,quantity) VALUES(" + order.getCustomer_id());
+			statement.executeUpdate("INSERT INTO orderlines(order_id,item_id,quantity) VALUES("+order.getId()+","+item_id+","+item_quantity+");");
 			return readOrder(order.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
