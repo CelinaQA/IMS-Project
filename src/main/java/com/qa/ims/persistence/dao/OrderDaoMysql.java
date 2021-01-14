@@ -103,6 +103,7 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 		}
 	}
 
+
 	@Override
 	public Order updateDelItem(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -120,19 +121,12 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 	public Order updateAddItem(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orderlines(customer_id,item_id,quantity) VALUES('" + order.getCustomer_id() + + +"')");
-			return readLatest();
+			statement.executeUpdate("INSERT INTO orderlines(customer_id,item_id,quantity) VALUES(" + order.getCustomer_id());
+			return readOrder(order.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
 		}
 		return null;
 	}
-
-	@Override
-	public Order updateItemQty(Order order) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

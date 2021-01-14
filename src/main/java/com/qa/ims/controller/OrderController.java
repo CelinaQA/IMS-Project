@@ -50,7 +50,7 @@ public class OrderController implements CrudController<Order> {
 
 	@Override
 	public Order update() {
-		LOGGER.info("Please enter the id of the order you would like to update");
+		LOGGER.info("Please enter the ID of the order you would like to update");
 		Long order_id = Long.valueOf(getInput());
 		
 		LOGGER.info("What would you like to do with this order?");
@@ -60,7 +60,7 @@ public class OrderController implements CrudController<Order> {
 		Long item_id;
 		Integer item_quantity;
 		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
-		
+
 		switch(option) {
 		case A:
 			LOGGER.info("Please enter ID of item you want to add");
@@ -75,24 +75,15 @@ public class OrderController implements CrudController<Order> {
 			item_id = Long.valueOf(getInput());
 			order = orderService.update(new Order(order_id, itemOrdered));
 			return order;
-		case C:
-			LOGGER.info("Please enter ID of item you want to update");
-			item_id = Long.valueOf(getInput());
-			LOGGER.info("Please enter new quantity of item ordered");
-			item_quantity = Integer.valueOf(getInput());
-			itemOrdered.put(item_id, item_quantity);
-			order = orderService.update(new Order(order_id, itemOrdered));
-			return order;
 		case STOP:
 			break;
 		}
-		
 		return order;
 	}
 
 	@Override
 	public void delete() {
-		LOGGER.info("Please enter the id of the order you would like to delete");
+		LOGGER.info("Please enter the ID of the order you would like to delete");
 		Long id = Long.valueOf(getInput());
 		orderService.delete(id);
 	}

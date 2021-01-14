@@ -7,8 +7,7 @@ import com.qa.ims.utils.Utils;
 
 public enum OrderUpdateOption {
 	
-	A("Add new item to order"), B("Delete item from order"),
-	C("Update quantity of item in order"), STOP("To close the application");
+	A("Add new item to order"), B("Delete item from order"), STOP("To close the application");
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 
