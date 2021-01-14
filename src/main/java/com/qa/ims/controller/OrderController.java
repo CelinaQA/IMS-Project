@@ -37,7 +37,13 @@ public class OrderController implements CrudController<Order> {
 	public Order create() {
 		LOGGER.info("Please enter a customer ID");
 		Long customer_id = Long.valueOf(getInput());
-		Order order = orderService.create(new Order(customer_id, null));
+		LOGGER.info("Please enter ID of item ordered");
+		Long item_id = Long.valueOf(getInput());
+		LOGGER.info("Please enter quantity of item ordered");
+		Integer item_quantity = Integer.valueOf(getInput());
+		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
+		itemOrdered.put(item_id, item_quantity);
+		Order order = orderService.create(new Order(customer_id, itemOrdered));
 		LOGGER.info("Order created");
 		return order;
 	}
