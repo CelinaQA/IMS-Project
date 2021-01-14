@@ -29,6 +29,12 @@ public class Order {
 		this.itemsOrdered = itemsOrdered;
 	}
 	
+	//to select specific order
+	public Order(Long id) {
+		super();
+		this.id = id;
+	}
+
 	//Default constructor
 	public Order() {
 		super();

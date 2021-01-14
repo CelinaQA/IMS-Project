@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
 
-public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
+public class OrderDaoMysql implements OrderDao<Order>{
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 	
@@ -83,16 +83,6 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 	}
 
 	@Override
-	public Order update(Order order) {
-		if (order.getItemsOrdered()==null) {
-			updateDelItem(order);
-		} else {
-			updateAddItem(order);
-		}
-		return null;
-	}
-
-	@Override
 	public void delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
@@ -105,7 +95,7 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 
 
 	@Override
-	public Order updateDelItem(Order order) {
+	public Order updateDelItem(Order order, Long item_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE orders SET customer_id ='" + order.getCustomer_id() + "' WHERE order_id =" + order.getId());
@@ -118,7 +108,7 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 	}
 
 	@Override
-	public Order updateAddItem(Order order) {
+	public Order updateAddItem(Order order, Long item_id, Integer item_quantity) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("INSERT INTO orderlines(customer_id,item_id,quantity) VALUES(" + order.getCustomer_id());

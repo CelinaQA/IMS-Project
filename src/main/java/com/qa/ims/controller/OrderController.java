@@ -7,16 +7,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.persistence.domain.Order;
-import com.qa.ims.services.CrudServices;
+import com.qa.ims.services.OrderCrudServices;
 import com.qa.ims.utils.Utils;
 
 public class OrderController implements CrudController<Order> {
 	
 	public static final Logger LOGGER = LogManager.getLogger();
 	
-	private CrudServices<Order> orderService;
+	private OrderCrudServices<Order> orderService;
 	
-	public OrderController(CrudServices<Order> orderService) {
+	public OrderController(OrderCrudServices<Order> orderService) {
 		this.orderService = orderService;
 	}
 	
@@ -52,11 +52,12 @@ public class OrderController implements CrudController<Order> {
 	public Order update() {
 		LOGGER.info("Please enter the ID of the order you would like to update");
 		Long order_id = Long.valueOf(getInput());
+		Order order = new Order(order_id);
 		
 		LOGGER.info("What would you like to do with this order?");
 		OrderUpdateOption.printOrderUpdateOptions();
 		OrderUpdateOption option = OrderUpdateOption.getOrderUpdateOptions();
-		Order order = new Order();
+		
 		Long item_id;
 		Integer item_quantity;
 		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
@@ -68,12 +69,12 @@ public class OrderController implements CrudController<Order> {
 			LOGGER.info("Please enter quantity of item ordered");
 			item_quantity = Integer.valueOf(getInput());
 			itemOrdered.put(item_id, item_quantity);
-			order = orderService.update(new Order(order_id, itemOrdered));
+			order = orderService.updateAddItem(order, item_id, item_quantity);
 			return order;
 		case B:
 			LOGGER.info("Please enter ID of item you want to delete");
 			item_id = Long.valueOf(getInput());
-			order = orderService.update(new Order(order_id, itemOrdered));
+			order = orderService.updateDelItem(order, item_id);
 			return order;
 		case STOP:
 			break;
