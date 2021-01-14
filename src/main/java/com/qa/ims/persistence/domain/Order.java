@@ -35,6 +35,11 @@ public class Order {
 		this.customer_id = customer_id;
 		this.itemsOrdered = itemsOrdered;
 	}
+	
+	//Default constructor
+	public Order() {
+		super();
+	}
 
 	public Long getId() {
 		return id;
