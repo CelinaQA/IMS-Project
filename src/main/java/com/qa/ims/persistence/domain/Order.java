@@ -21,13 +21,6 @@ public class Order {
 		this.date_placed = date_placed;
 		this.itemsOrdered = itemsOrdered;
 	}
-	
-	//to update customer id only
-	public Order(Long id, Long customer_id) {
-		super();
-		this.id = id;
-		this.customer_id = customer_id;
-	}
 
 	//to create and to update items ordered
 	public Order(Long customer_id, HashMap<Long, Integer> itemsOrdered) {

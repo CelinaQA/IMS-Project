@@ -53,39 +53,33 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter the id of the order you would like to update");
 		Long id = Long.valueOf(getInput());
 		
-		LOGGER.info("What would you like to do with this order?");
-		OrderUpdateOption.printOrderUpdateOptions();
-		OrderUpdateOption option = OrderUpdateOption.getOrderUpdateOptions();
-		
 		boolean stop = false;
 		do {
 			
-			switch(option) {
-			case A:
-				LOGGER.info("Please enter new customer ID");
-				Long customer_id = Long.valueOf(getInput());
-				orderService.update(new Order(id, customer_id));
-				break;
-			case B:
-				LOGGER.info("Please enter ID of item ordered");
-				Long item_id = Long.valueOf(getInput());
-				LOGGER.info("Please enter quantity of item ordered");
-				Integer item_quantity = Integer.valueOf(getInput());
-				HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
-				itemOrdered.put(item_id, item_quantity);
-				Order order = new Order(customer_id, itemOrdered);
-				break;
-			case C:
-				break;
-			case D:
-				break;
-			case STOP:
-				stop = true;
-				break;
-			
 		} while (!stop);
 		
-		
+		LOGGER.info("What would you like to do with this order?");
+		OrderUpdateOption.printOrderUpdateOptions();
+		OrderUpdateOption option = OrderUpdateOption.getOrderUpdateOptions();
+		Order order = new Order();
+		switch(option) {
+		case B:
+			LOGGER.info("Please enter ID of item ordered");
+			Long item_id = Long.valueOf(getInput());
+			LOGGER.info("Please enter quantity of item ordered");
+			Integer item_quantity = Integer.valueOf(getInput());
+			HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
+			itemOrdered.put(item_id, item_quantity);
+			order = orderService.update(new Order(id, itemOrdered));
+			return order;
+		case C:
+			break;
+		case D:
+			break;
+		case STOP:
+			stop = true;
+			break;
+		}
 		
 		return order;
 	}
