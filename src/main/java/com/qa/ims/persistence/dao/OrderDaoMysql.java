@@ -84,13 +84,10 @@ public class OrderDaoMysql implements Dao<Order>,OrderUpdateDao<Order>{
 
 	@Override
 	public Order update(Order order) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("UPDATE orders SET customer_id ='" + order.getCustomer_id() + "' WHERE order_id =" + order.getId());
-			return readOrder(order.getId());
-		} catch (Exception e) {
-			LOGGER.debug(e.getStackTrace());
-			LOGGER.error(e.getMessage());
+		if (order.getItemsOrdered()==null) {
+			updateDelItem(order);
+		} else {
+			updateAddItem(order);
 		}
 		return null;
 	}

@@ -51,33 +51,39 @@ public class OrderController implements CrudController<Order> {
 	@Override
 	public Order update() {
 		LOGGER.info("Please enter the id of the order you would like to update");
-		Long id = Long.valueOf(getInput());
-		
-		boolean stop = false;
-		do {
-			
-		} while (!stop);
+		Long order_id = Long.valueOf(getInput());
 		
 		LOGGER.info("What would you like to do with this order?");
 		OrderUpdateOption.printOrderUpdateOptions();
 		OrderUpdateOption option = OrderUpdateOption.getOrderUpdateOptions();
 		Order order = new Order();
+		Long item_id;
+		Integer item_quantity;
+		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
+		
 		switch(option) {
-		case B:
-			LOGGER.info("Please enter ID of item ordered");
-			Long item_id = Long.valueOf(getInput());
+		case A:
+			LOGGER.info("Please enter ID of item you want to add");
+			item_id = Long.valueOf(getInput());
 			LOGGER.info("Please enter quantity of item ordered");
-			Integer item_quantity = Integer.valueOf(getInput());
-			HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
+			item_quantity = Integer.valueOf(getInput());
 			itemOrdered.put(item_id, item_quantity);
-			order = orderService.update(new Order(id, itemOrdered));
+			order = orderService.update(new Order(order_id, itemOrdered));
+			return order;
+		case B:
+			LOGGER.info("Please enter ID of item you want to delete");
+			item_id = Long.valueOf(getInput());
+			order = orderService.update(new Order(order_id, itemOrdered));
 			return order;
 		case C:
-			break;
-		case D:
-			break;
+			LOGGER.info("Please enter ID of item you want to update");
+			item_id = Long.valueOf(getInput());
+			LOGGER.info("Please enter new quantity of item ordered");
+			item_quantity = Integer.valueOf(getInput());
+			itemOrdered.put(item_id, item_quantity);
+			order = orderService.update(new Order(order_id, itemOrdered));
+			return order;
 		case STOP:
-			stop = true;
 			break;
 		}
 		
