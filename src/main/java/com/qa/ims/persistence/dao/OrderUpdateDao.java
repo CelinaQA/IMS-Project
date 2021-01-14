@@ -6,7 +6,4 @@ public interface OrderUpdateDao<T> {
 	
 	T updateAddItem(T t);
 	
-	T updateItemQty(T t);
-	
-
 }
