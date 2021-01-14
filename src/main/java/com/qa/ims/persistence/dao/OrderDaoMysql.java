@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,14 +23,19 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		Long id = resultSet.getLong("order_id");
 		Long customer_id = resultSet.getLong("customer_id");
 		Date date_placed = resultSet.getDate("date_placed");
-		return new Order(id, customer_id, date_placed, null);
+		Float totalPrice = resultSet.getFloat("total_price");
+		HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
+		while (resultSet.next()) {
+			itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
+		};
+		return new Order(id, customer_id, date_placed, itemsOrdered, totalPrice);
 	}
 	
 	@Override
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.order_id,o.customer_id,i.item_name,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id ORDER BY o.order_id;");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id ORDER BY o.order_id;");) {
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
@@ -45,7 +51,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.order_id,o.customer_id,i.item_name,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -58,7 +64,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readOrder(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.customer_id,i.item_name,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id);) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id);) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -86,7 +92,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public void delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("DELETE FROM orders WHERE order_id = " + id);
+			statement.executeUpdate("DELETE FROM orderlines WHERE order_id=" + id + "; DELETE FROM orders WHERE order_id=" + id + ";");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());

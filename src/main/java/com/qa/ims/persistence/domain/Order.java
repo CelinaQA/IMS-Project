@@ -9,17 +9,19 @@ public class Order {
 	private Long id;
 	private Long customer_id;
 	private Date date_placed = Calendar.getInstance().getTime();
+	private Float totalPrice;
 	
 	//Orderline
 	private HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
 
 	//to read
-	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered) {
+	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered, Float totalPrice) {
 		super();
 		this.id = id;
 		this.customer_id = customer_id;
 		this.date_placed = date_placed;
 		this.itemsOrdered = itemsOrdered;
+		this.totalPrice = totalPrice;
 	}
 
 	//to create and to update items ordered
@@ -73,10 +75,18 @@ public class Order {
 		this.itemsOrdered = itemsOrdered;
 	}
 
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	@Override
 	public String toString() {
 		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
-				printItemsOrdered();
+				printItemsOrdered()+ "\n" + "Total price: £" + totalPrice;
 	}
 	
 	public String printItemsOrdered() {
@@ -92,6 +102,7 @@ public class Order {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
 		result = prime * result + ((customer_id == null) ? 0 : customer_id.hashCode());
 		result = prime * result + ((date_placed == null) ? 0 : date_placed.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -108,6 +119,11 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
+		if (totalPrice == null) {
+			if (other.totalPrice != null)
+				return false;
+		} else if (!totalPrice.equals(other.totalPrice))
+			return false;
 		if (customer_id == null) {
 			if (other.customer_id != null)
 				return false;
@@ -130,5 +146,5 @@ public class Order {
 			return false;
 		return true;
 	}
-
+	
 }
