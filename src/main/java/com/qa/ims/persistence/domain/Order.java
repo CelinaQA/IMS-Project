@@ -29,10 +29,11 @@ public class Order {
 		this.itemsOrdered = itemsOrdered;
 	}
 	
-	//to select specific order
-	public Order(Long id) {
+	//to select specific order for customer
+	public Order(Long order_id, Long customer_id) {
 		super();
-		this.id = id;
+		this.id = order_id;
+		this.customer_id = customer_id;
 	}
 
 	//Default constructor
