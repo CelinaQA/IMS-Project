@@ -37,6 +37,16 @@ public class Order {
 		this.id = order_id;
 		this.customer_id = customer_id;
 	}
+	
+	
+
+	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered) {
+		super();
+		this.id = id;
+		this.customer_id = customer_id;
+		this.date_placed = date_placed;
+		this.itemsOrdered = itemsOrdered;
+	}
 
 	//Default constructor
 	public Order() {
@@ -86,7 +96,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
-				printItemsOrdered()+ "\n" + "Total price: £" + totalPrice;
+				printItemsOrdered()+ "Total price: £" + totalPrice +"\n";
 	}
 	
 	public String printItemsOrdered() {
