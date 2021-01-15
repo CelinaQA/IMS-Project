@@ -79,7 +79,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order create(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES('" + order.getCustomer_id() + "')");
+			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES('" + order.getCustomer_id() + "'); INSERT INTO orderlines(order_id,item_id,quantity) VALUES(SCOPE_IDENTITY(),"+((order.getItemsOrdered()).keySet()).toArray()[0]+","+order.getItemsOrdered().get(order.getItemsOrdered().keySet().toArray()[0])+");");
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
