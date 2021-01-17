@@ -41,10 +41,10 @@ public class ItemControllerTest {
 	public void createTest() {
 		String id = "1";
 		String name = "sugar";
-		int stock = 20;
-		Float price = 3.99f;
+		String stock = "20";
+		String price = "3.99";
 		Mockito.doReturn(id, name, stock, price).when(itemController).getInput();
-		Item item = new Item(name, stock, price);
+		Item item = new Item(name, 20, 3.99f);
 		Item savedItem = new Item(1L, "sugar", 20, 3.99f);
 		Mockito.when(itemServices.create(item)).thenReturn(savedItem);
 		assertEquals(savedItem, itemController.create());
@@ -54,10 +54,10 @@ public class ItemControllerTest {
 	public void updateTest() {
 		String id = "1";
 		String name = "sugar";
-		int stock = 20;
-		Float price = 3.99f;
+		String stock = "20";
+		String price = "3.99";
 		Mockito.doReturn(id, name, stock, price).when(itemController).getInput();
-		Item item = new Item(1L, name, stock, price);
+		Item item = new Item(1L, name, 20, 3.99f);
 		Mockito.when(itemServices.update(item)).thenReturn(item);
 		assertEquals(item, itemController.update());
 	}
