@@ -49,6 +49,16 @@ public class Order {
 		this.id = order_id;
 		this.customer_id = customer_id;
 	}
+	
+	
+	//for testing
+	public Order(Long id, Long customer_id, Long item_id, Integer quantity) {
+		super();
+		this.id = id;
+		this.customer_id = customer_id;
+		this.item_id = item_id;
+		this.quantity = quantity;
+	}
 
 	//Default constructor
 	public Order() {
