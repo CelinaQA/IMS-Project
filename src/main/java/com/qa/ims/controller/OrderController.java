@@ -1,6 +1,5 @@
 package com.qa.ims.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +59,6 @@ public class OrderController implements CrudController<Order> {
 		
 		Long item_id;
 		Integer quantity;
-		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
 
 		switch(option) {
 		case A:
@@ -68,7 +66,6 @@ public class OrderController implements CrudController<Order> {
 			item_id = Long.valueOf(getInput());
 			LOGGER.info("Please enter quantity of item ordered");
 			quantity = Integer.valueOf(getInput());
-			itemOrdered.put(item_id, quantity);
 			order = orderService.updateAddItem(order, item_id, quantity);
 			LOGGER.info("Order Updated");
 			return order;
