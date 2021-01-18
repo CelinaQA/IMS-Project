@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -23,28 +22,11 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		Long id = resultSet.getLong("order_id");
 		Long customer_id = resultSet.getLong("customer_id");
 		Date date_placed = resultSet.getDate("date_placed");
-		//Float price = resultSet.getFloat("price");
-		//Float totalPrice = resultSet.getFloat("total_price");
-		HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
-		itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
-//		while (resultSet.next()) {
-//			itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
-//		};
-		return new Order(id, customer_id, date_placed, itemsOrdered);
-	}
-	
-	public Order modelOrderFromResultSet(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("order_id");
-		Long customer_id = resultSet.getLong("customer_id");
-		Date date_placed = resultSet.getDate("date_placed");
-		//Float price = resultSet.getFloat("price");
-		//Float totalPrice = resultSet.getFloat("total_price");
-		HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
-		itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
-		while (resultSet.next()) {
-			itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
-		};
-		return new Order(id, customer_id, date_placed, itemsOrdered);
+		Float totalPrice = resultSet.getFloat("total_price");
+		Long item_id = resultSet.getLong("item_id");
+		Integer quantity = resultSet.getInt("quantity");
+
+		return new Order(id, customer_id, date_placed, totalPrice, item_id, quantity);
 	}
 	
 	//READ FUNCTION--------------------------------------------
@@ -71,7 +53,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
 			resultSet.next();
-			return modelOrderFromResultSet(resultSet);
+			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -99,7 +81,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order create(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + "); INSERT INTO orderlines(order_id,item_id,quantity) VALUES((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1),"+((order.getItemsOrdered()).keySet()).toArray()[0]+","+order.getItemsOrdered().get(order.getItemsOrdered().keySet().toArray()[0])+");");
+			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + "); INSERT INTO orderlines(order_id,item_id,quantity) VALUES((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1),"+order.getItem_id()+","+order.getQuantity()+");");
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());

@@ -26,10 +26,9 @@ public class Order {
 	}
 
 	//to create order
-	public Order(Long customer_id, Float totalPrice, Long item_id, Integer quantity) {
+	public Order(Long customer_id, Long item_id, Integer quantity) {
 		super();
 		this.customer_id = customer_id;
-		this.totalPrice = totalPrice;
 		this.item_id = item_id;
 		this.quantity = quantity;
 	}
@@ -55,9 +54,27 @@ public class Order {
 	public Order() {
 		super();
 	}
-
+	
+	//Getters and setters
+	
 	public Long getId() {
 		return id;
+	}
+
+	public Long getItem_id() {
+		return item_id;
+	}
+
+	public void setItem_id(Long item_id) {
+		this.item_id = item_id;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public void setId(Long id) {

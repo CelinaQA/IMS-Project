@@ -40,10 +40,8 @@ public class OrderController implements CrudController<Order> {
 		LOGGER.info("Please enter ID of item ordered");
 		Long item_id = Long.valueOf(getInput());
 		LOGGER.info("Please enter quantity of item ordered");
-		Integer item_quantity = Integer.valueOf(getInput());
-		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
-		itemOrdered.put(item_id, item_quantity);
-		Order order = orderService.create(new Order(customer_id, itemOrdered));
+		Integer quantity = Integer.valueOf(getInput());
+		Order order = orderService.create(new Order(customer_id, item_id, quantity));
 		LOGGER.info("Order created");
 		return order;
 	}
@@ -61,7 +59,7 @@ public class OrderController implements CrudController<Order> {
 		OrderUpdateOption option = OrderUpdateOption.getOrderUpdateOptions();
 		
 		Long item_id;
-		Integer item_quantity;
+		Integer quantity;
 		HashMap<Long, Integer> itemOrdered = new HashMap<Long, Integer>();
 
 		switch(option) {
@@ -69,9 +67,9 @@ public class OrderController implements CrudController<Order> {
 			LOGGER.info("Please enter ID of item you want to add");
 			item_id = Long.valueOf(getInput());
 			LOGGER.info("Please enter quantity of item ordered");
-			item_quantity = Integer.valueOf(getInput());
-			itemOrdered.put(item_id, item_quantity);
-			order = orderService.updateAddItem(order, item_id, item_quantity);
+			quantity = Integer.valueOf(getInput());
+			itemOrdered.put(item_id, quantity);
+			order = orderService.updateAddItem(order, item_id, quantity);
 			LOGGER.info("Order Updated");
 			return order;
 		case B:
