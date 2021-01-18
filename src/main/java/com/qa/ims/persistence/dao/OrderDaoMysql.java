@@ -35,7 +35,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id ORDER BY o.order_id;");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,ol.total_price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id ORDER BY o.order_id;");) {
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
@@ -51,7 +51,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,ol.total_price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -64,7 +64,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readOrder(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,ol.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id+";");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,ol.order_id,o.customer_id,i.item_id,ol.quantity,ol.total_price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id+";");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -74,19 +74,6 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		return null;
 	}
 	
-	public Float getItemPrice(Order order) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT price FROM items WHERE item_id="+order.getItem_id())) {
-			while (resultSet.next());
-			Float price = resultSet.getFloat("price");
-			return price;
-		} catch (Exception e) {
-			LOGGER.debug(e.getStackTrace());
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
 	
 	//CREATE FUNCTION------------------------------------------
 	
@@ -96,9 +83,20 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			
-			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + 
+			String getPrice = "SELECT price FROM items WHERE item_id="+order.getItem_id();
+			ResultSet resultPrice = statement.executeQuery(getPrice);
+			while(resultPrice.next()) {
+				Float price = resultPrice.getFloat("price");
+				order.setTotalPrice(price);
+			}
+			Float totalPrice = order.getTotalPrice()*order.getQuantity();
+			order.setTotalPrice(totalPrice);
+			
+			String createOrder = "INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + 
 					"); INSERT INTO orderlines(order_id,item_id,quantity,total_price) VALUES((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1),"
-					+order.getItem_id()+","+order.getQuantity()+");");
+					+order.getItem_id()+","+order.getQuantity()+","+order.getTotalPrice()+");";
+			statement.executeUpdate(createOrder);
+			
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
