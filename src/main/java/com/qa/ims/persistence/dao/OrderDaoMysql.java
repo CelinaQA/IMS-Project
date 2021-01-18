@@ -74,6 +74,20 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		return null;
 	}
 	
+	public Float getItemPrice(Order order) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery("SELECT price FROM items WHERE item_id="+order.getItem_id())) {
+			while (resultSet.next());
+			Float price = resultSet.getFloat("price");
+			return price;
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	}
+	
 	//CREATE FUNCTION------------------------------------------
 	
 	//Date placed is left null to automatically take default value as current date
@@ -81,7 +95,10 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order create(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + "); INSERT INTO orderlines(order_id,item_id,quantity) VALUES((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1),"+order.getItem_id()+","+order.getQuantity()+");");
+			
+			statement.executeUpdate("INSERT INTO orders(customer_id) VALUES(" + order.getCustomer_id() + 
+					"); INSERT INTO orderlines(order_id,item_id,quantity,total_price) VALUES((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1),"
+					+order.getItem_id()+","+order.getQuantity()+");");
 			return readLatest();
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
