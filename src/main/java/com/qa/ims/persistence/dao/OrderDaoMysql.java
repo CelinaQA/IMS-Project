@@ -33,6 +33,22 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		return new Order(id, customer_id, date_placed, itemsOrdered);
 	}
 	
+	public Order modelOrderFromResultSet(ResultSet resultSet) throws SQLException {
+		Long id = resultSet.getLong("order_id");
+		Long customer_id = resultSet.getLong("customer_id");
+		Date date_placed = resultSet.getDate("date_placed");
+		//Float price = resultSet.getFloat("price");
+		//Float totalPrice = resultSet.getFloat("total_price");
+		HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
+		itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
+		while (resultSet.next()) {
+			itemsOrdered.put(resultSet.getLong("item_id"), resultSet.getInt("quantity"));
+		};
+		return new Order(id, customer_id, date_placed, itemsOrdered);
+	}
+	
+	//READ FUNCTION--------------------------------------------
+	
 	@Override
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
@@ -55,7 +71,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,i.price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
 			resultSet.next();
-			return modelFromResultSet(resultSet);
+			return modelOrderFromResultSet(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -76,6 +92,8 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		return null;
 	}
 	
+	//CREATE FUNCTION------------------------------------------
+	
 	//Date placed is left null to automatically take default value as current date
 	@Override
 	public Order create(Order order) {
@@ -89,18 +107,8 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		}
 		return null;
 	}
-
-	@Override
-	public void delete(long id) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("DELETE FROM orderlines WHERE order_id=" + id + "; DELETE FROM orders WHERE order_id=" + id + ";");
-		} catch (Exception e) {
-			LOGGER.debug(e.getStackTrace());
-			LOGGER.error(e.getMessage());
-		}
-	}
-
+	
+	//UPDATE FUNCTIONS-----------------------------------------
 
 	@Override
 	public Order updateDelItem(Order order, Long item_id) {
@@ -126,5 +134,18 @@ public class OrderDaoMysql implements OrderDao<Order>{
 			LOGGER.error(e.getMessage());
 		}
 		return null;
+	}
+	
+	//DELETE FUNCTION-----------------------------------------
+	
+	@Override
+	public void delete(long id) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("DELETE FROM orderlines WHERE order_id=" + id + "; DELETE FROM orders WHERE order_id=" + id + ";");
+		} catch (Exception e) {
+			LOGGER.debug(e.getStackTrace());
+			LOGGER.error(e.getMessage());
+		}
 	}
 }

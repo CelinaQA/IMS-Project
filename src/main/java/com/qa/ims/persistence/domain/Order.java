@@ -2,7 +2,6 @@ package com.qa.ims.persistence.domain;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 public class Order {
 	
@@ -12,23 +11,37 @@ public class Order {
 	private Float totalPrice;
 	
 	//Orderline
-	private HashMap<Long, Integer> itemsOrdered = new HashMap<Long, Integer>();
+	private Long item_id;
+	private Integer quantity;
 
 	//to read
-	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered, Float totalPrice) {
+	public Order(Long id, Long customer_id, Date date_placed, Float totalPrice, Long item_id, Integer quantity) {
 		super();
 		this.id = id;
 		this.customer_id = customer_id;
 		this.date_placed = date_placed;
-		this.itemsOrdered = itemsOrdered;
 		this.totalPrice = totalPrice;
+		this.item_id = item_id;
+		this.quantity = quantity;
 	}
 
-	//to create and to update items ordered
-	public Order(Long customer_id, HashMap<Long, Integer> itemsOrdered) {
+	//to create order
+	public Order(Long customer_id, Float totalPrice, Long item_id, Integer quantity) {
 		super();
 		this.customer_id = customer_id;
-		this.itemsOrdered = itemsOrdered;
+		this.totalPrice = totalPrice;
+		this.item_id = item_id;
+		this.quantity = quantity;
+	}
+	
+	//to update order
+	public Order(Long id, Long customer_id, Float totalPrice, Long item_id, Integer quantity) {
+		super();
+		this.id = id;
+		this.customer_id = customer_id;
+		this.totalPrice = totalPrice;
+		this.item_id = item_id;
+		this.quantity = quantity;
 	}
 	
 	//to select specific order for customer
@@ -36,16 +49,6 @@ public class Order {
 		super();
 		this.id = order_id;
 		this.customer_id = customer_id;
-	}
-	
-	
-
-	public Order(Long id, Long customer_id, Date date_placed, HashMap<Long, Integer> itemsOrdered) {
-		super();
-		this.id = id;
-		this.customer_id = customer_id;
-		this.date_placed = date_placed;
-		this.itemsOrdered = itemsOrdered;
 	}
 
 	//Default constructor
@@ -76,14 +79,6 @@ public class Order {
 	public void setDate_placed(Date date_placed) {
 		this.date_placed = date_placed;
 	}
-	
-	public HashMap<Long, Integer> getItemsOrdered() {
-		return itemsOrdered;
-	}
-
-	public void setItemsOrdered(HashMap<Long, Integer> itemsOrdered) {
-		this.itemsOrdered = itemsOrdered;
-	}
 
 	public Float getTotalPrice() {
 		return totalPrice;
@@ -96,27 +91,19 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
-				printItemsOrdered()+ "Total price: £" + totalPrice +"\n";
-	}
-	
-	public String printItemsOrdered() {
-		String str = "";
-		
-		for (Long key : itemsOrdered.keySet()) {
-			str += "Item ID: " + key + "  Quantity: " + itemsOrdered.get(key) + "\n";
-		} 
-		return str;
+				"Total price: £" + totalPrice +"\n";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
 		result = prime * result + ((customer_id == null) ? 0 : customer_id.hashCode());
 		result = prime * result + ((date_placed == null) ? 0 : date_placed.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((itemsOrdered == null) ? 0 : itemsOrdered.hashCode());
+		result = prime * result + ((item_id == null) ? 0 : item_id.hashCode());
+		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
+		result = prime * result + ((totalPrice == null) ? 0 : totalPrice.hashCode());
 		return result;
 	}
 
@@ -129,11 +116,6 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		if (totalPrice == null) {
-			if (other.totalPrice != null)
-				return false;
-		} else if (!totalPrice.equals(other.totalPrice))
-			return false;
 		if (customer_id == null) {
 			if (other.customer_id != null)
 				return false;
@@ -149,12 +131,22 @@ public class Order {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (itemsOrdered == null) {
-			if (other.itemsOrdered != null)
+		if (item_id == null) {
+			if (other.item_id != null)
 				return false;
-		} else if (!itemsOrdered.equals(other.itemsOrdered))
+		} else if (!item_id.equals(other.item_id))
+			return false;
+		if (quantity == null) {
+			if (other.quantity != null)
+				return false;
+		} else if (!quantity.equals(other.quantity))
+			return false;
+		if (totalPrice == null) {
+			if (other.totalPrice != null)
+				return false;
+		} else if (!totalPrice.equals(other.totalPrice))
 			return false;
 		return true;
 	}
-	
+
 }

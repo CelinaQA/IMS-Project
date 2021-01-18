@@ -72,11 +72,13 @@ public class OrderController implements CrudController<Order> {
 			item_quantity = Integer.valueOf(getInput());
 			itemOrdered.put(item_id, item_quantity);
 			order = orderService.updateAddItem(order, item_id, item_quantity);
+			LOGGER.info("Order Updated");
 			return order;
 		case B:
 			LOGGER.info("Please enter ID of item you want to delete");
 			item_id = Long.valueOf(getInput());
 			order = orderService.updateDelItem(order, item_id);
+			LOGGER.info("Order Updated");
 			return order;
 		case STOP:
 			break;
