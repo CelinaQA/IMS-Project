@@ -22,7 +22,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		Long id = resultSet.getLong("order_id");
 		Long customer_id = resultSet.getLong("customer_id");
 		Date date_placed = resultSet.getDate("date_placed");
-		Float totalPrice = resultSet.getFloat("total_price");
+		Float totalPrice = resultSet.getFloat("SUM(ol.total_price)");
 		Long item_id = resultSet.getLong("item_id");
 		Integer quantity = resultSet.getInt("quantity");
 
@@ -35,7 +35,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,ol.total_price from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id ORDER BY o.order_id;");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id GROUP BY o.order_id ORDER BY o.order_id;");) {
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
@@ -124,7 +124,15 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order updateAddItem(Order order, Long item_id, Integer item_quantity) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO orderlines(order_id,item_id,quantity) VALUES("+order.getId()+","+item_id+","+item_quantity+");");
+			String getPrice = "SELECT price FROM items WHERE item_id="+item_id;
+			ResultSet resultPrice = statement.executeQuery(getPrice);
+			
+			Float newPrice = null;
+			while(resultPrice.next()) {
+				newPrice = resultPrice.getFloat("price")*item_quantity;
+			}
+			
+			statement.executeUpdate("INSERT INTO orderlines(order_id,item_id,quantity,total_price) VALUES("+order.getId()+","+item_id+","+item_quantity+","+newPrice+");");
 			return readOrder(order.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
