@@ -82,7 +82,7 @@ public class CustomerDaoMysql implements Dao<Customer> {
 	public Customer readCustomer(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT FROM customers WHERE customer_id = " + id);) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers WHERE customer_id = " + id+";");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -104,7 +104,7 @@ public class CustomerDaoMysql implements Dao<Customer> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
 			statement.executeUpdate("UPDATE customers SET first_name ='" + customer.getFirstName() + "', last_name ='"
-					+ customer.getSurname() + "' WHERE customer_id =" + customer.getId());
+					+ customer.getSurname() + "' WHERE customer_id =" + customer.getId()+";");
 			return readCustomer(customer.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
