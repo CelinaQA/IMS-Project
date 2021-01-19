@@ -55,6 +55,7 @@ public class OrderControllerTest {
 	
 	@Test
 	public void updateAddTest() {
+		System.out.println("---------UPDATE ADD TEST------------");
 		String order_id = "100";
 		String customer_id = "1";
 		String item_id = "1";
@@ -68,17 +69,26 @@ public class OrderControllerTest {
 		assertEquals(savedOrder, orderController.update());
 	}
 	
-//	@Test
-//	public void updateDelTest() {
-//		String order_id = "100";
-//		String customer_id = "1";
-//		String item_id = "1";
-//		//String option = "b";
-//		
-//		Mockito.doReturn(customer_id,order_id,item_id).when(orderController).getInput();;
-//		Order order = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.50f, 1L, 5);
-//		Mockito.when(orderServices.updateDelItem(order, 1L)).thenReturn(null);
-//		assertEquals(null, orderController.update());
-//	}
+	@Test
+	public void updateDelTest() {
+		System.out.println("---------UPDATE DEL TEST------------");
+		String order_id = "100";
+		String customer_id = "1";
+		String item_id = "1";
+		//String option = "b";
+		
+		Mockito.doReturn(customer_id,order_id,item_id).when(orderController).getInput();;
+		Order order = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.50f, 1L, 5);
+		Mockito.when(orderServices.updateDelItem(order, 1L)).thenReturn(null);
+		assertEquals(null, orderController.update());
+	}
+	
+	@Test
+	public void deleteTest() {
+		String order_id = "1";
+		Mockito.doReturn(order_id).when(orderController).getInput();
+		orderController.delete();
+		Mockito.verify(orderServices, Mockito.times(1)).delete(1L);
+	}
 
 }
