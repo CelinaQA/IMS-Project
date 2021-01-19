@@ -4,17 +4,17 @@ public class Item {
 	
 	private Long id;
 	private String name;
-	private int stock;
-	private float price;
+	private Integer stock;
+	private Float price;
 	
-	public Item(String name, int stock, float price) {
+	public Item(String name, Integer stock, Float price) {
 		super();
 		this.name = name;
 		this.stock = stock;
 		this.price = price;
 	}
 
-	public Item(Long id, String name, int stock, float price) {
+	public Item(Long id, String name, Integer stock, Float price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -25,7 +25,7 @@ public class Item {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -38,25 +38,25 @@ public class Item {
 		this.name = name;
 	}
 
-	public int getStock() {
+	public Integer getStock() {
 		return stock;
 	}
 
-	public void setStock(int stock) {
+	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
 
-	public float getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
 
 	public String toString() {
-		return "Item [id=" + id + ", name=" + name + ", stock=" + stock + ", price=" + price + "]";
+		return "Item ID: " + id +"\n"+"Name: " + name +"\n"+ "Stock: " + stock +"\n"+ "Price: £" + price;
 	}
 
 	@Override
@@ -65,8 +65,8 @@ public class Item {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + Float.floatToIntBits(price);
-		result = prime * result + stock;
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
+		result = prime * result + ((stock == null) ? 0 : stock.hashCode());
 		return result;
 	}
 
@@ -89,13 +89,17 @@ public class Item {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+		if (price == null) {
+			if (other.price != null)
+				return false;
+		} else if (!price.equals(other.price))
 			return false;
-		if (stock != other.stock)
+		if (stock == null) {
+			if (other.stock != null)
+				return false;
+		} else if (!stock.equals(other.stock))
 			return false;
 		return true;
 	}
-	
-	
 
 }

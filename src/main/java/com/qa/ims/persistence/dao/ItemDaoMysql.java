@@ -21,8 +21,8 @@ public class ItemDaoMysql implements Dao<Item>{
 	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("item_id");
 		String name = resultSet.getString("item_name");
-		int stock = resultSet.getInt("stock");
-		float price = resultSet.getFloat("price");
+		Integer stock = resultSet.getInt("stock");
+		Float price = resultSet.getFloat("price");
 		
 		return new Item(id, name, stock, price);
 	}
