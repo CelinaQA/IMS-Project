@@ -146,6 +146,7 @@ public class ItemTest {
 	public void hashCodeTest() {
 		assertEquals(item.hashCode(), other.hashCode());
 	}
+	
 	@Test
 	public void hashCodeTestWithNull() {
 		Item item = new Item(null, null, null);

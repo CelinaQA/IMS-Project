@@ -118,7 +118,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order ID = " + id + "\n"+ "Customer ID = " + customer_id + "\n"+"Date placed = " + date_placed + "\n"+
-				"Total price: £" + totalPrice +"\n";
+				"Total price: £" + totalPrice;
 	}
 
 	@Override
