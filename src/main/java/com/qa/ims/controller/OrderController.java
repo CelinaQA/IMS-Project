@@ -42,7 +42,7 @@ public class OrderController implements CrudController<Order> {
 		Integer quantity = Integer.valueOf(getInput());
 		Order order = orderService.create(new Order(customer_id, item_id, quantity));
 		LOGGER.info("Order created");
-		return order;
+		return order; 
 	}
 
 	@Override

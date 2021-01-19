@@ -148,11 +148,11 @@ public class Order {
 				return false;
 		} else if (!customer_id.equals(other.customer_id))
 			return false;
-		if (date_placed == null) {
-			if (other.date_placed != null)
-				return false;
-		} else if (!date_placed.equals(other.date_placed))
-			return false;
+//		if (date_placed == null) {
+//			if (other.date_placed != null)
+//				return false;
+//		} else if (!date_placed.equals(other.date_placed))
+//			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
