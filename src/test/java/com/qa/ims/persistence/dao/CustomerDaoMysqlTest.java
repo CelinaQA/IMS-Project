@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.utils.DBUtils;
-import com.qa.ims.utils.DBUtilsTest;
 
 public class CustomerDaoMysqlTest {
 	
@@ -25,12 +24,13 @@ public class CustomerDaoMysqlTest {
 	
 	private static String DB_USER = "root";
 	private static String DB_PASS = "root";
+	private static String DB_URL = "jdbc:mysql://127.0.0.1:3306/ims_test?allowMultiQueries=true";
 	private static String DB_FILE = "src/test/resources/sql-schema.sql";
 
 	@BeforeClass
 	public static void init() {
 		
-		try (Connection connection = DBUtilsTest.getInstance(DB_USER, DB_PASS).getConnection();
+		try (Connection connection = DBUtils.getInstance(DB_USER, DB_PASS).getConnection();
 				BufferedReader br = new BufferedReader(new FileReader(DB_FILE));) {
 			String string;
 			while ((string = br.readLine()) != null) {
@@ -50,7 +50,7 @@ public class CustomerDaoMysqlTest {
 	public void setup() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("DELETE FROM orderlines; DELETE FROM orders; DELETE FROM customers;");
+			statement.executeUpdate("DELETE FROM orderlines; DELETE FROM items; DELETE FROM orders; DELETE FROM customers;");
 		} catch (Exception e) {
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
