@@ -73,7 +73,7 @@ public static final Logger LOGGER = LogManager.getLogger();
 		Order order = new Order(1L, 1L, 3);
 		Date date = Calendar.getInstance().getTime();
 		order = orderDaoMysql.create(order);
-		Order savedOrder = new Order(100L, 1L, date, 3f, 1L, 3);
+		Order savedOrder = new Order(100L, 1L, date, 3f);
 		assertEquals(savedOrder, order);
 	}
 	
@@ -82,8 +82,8 @@ public static final Logger LOGGER = LogManager.getLogger();
 		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
 		List<Order> orders = new ArrayList<>();
 		Date date = Calendar.getInstance().getTime();
-		Order order1 = new Order(100L, 1L, date, 1f, 1L, 1);
-		Order order2 = new Order(101L, 2L, date, 1f, 2L, 1);
+		Order order1 = new Order(100L, 1L, date, 1f);
+		Order order2 = new Order(101L, 2L, date, 1f);
 		orders.add(order1);
 		orders.add(order2);
 		orderDaoMysql.create(new Order(1L, 1L, 1));
@@ -95,6 +95,11 @@ public static final Logger LOGGER = LogManager.getLogger();
 	@Test
 	public void updateAddTest() {
 		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
+		Date date = Calendar.getInstance().getTime();
+		orderDaoMysql.create(new Order(1L, 1L, 1));
+		Order order = new Order(100L, 1L);
+		Order savedOrder = new Order(100L, 1L, date, 2f);
+		assertEquals(savedOrder, orderDaoMysql.updateAddItem(order, 2L, 1));
 	}
 
 }

@@ -25,6 +25,14 @@ public class Order {
 		this.quantity = quantity;
 	}
 
+	public Order(Long id, Long customer_id, Date date_placed, Float totalPrice) {
+		super();
+		this.id = id;
+		this.customer_id = customer_id;
+		this.date_placed = date_placed;
+		this.totalPrice = totalPrice;
+	}
+
 	//to create order
 	public Order(Long customer_id, Long item_id, Integer quantity) {
 		super();
