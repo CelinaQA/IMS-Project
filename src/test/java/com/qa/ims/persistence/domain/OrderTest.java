@@ -203,7 +203,7 @@ public class OrderTest {
 	@Test
 	public void toStringTest() {
 		String toString = "Order ID = 100" +"\n"+ "Customer ID = 1" +"\n"+"Date placed = " +Calendar.getInstance().getTime()+ "\n"+
-				"Total price: £0.99";
+				"Total price: £0.99"+ "\n";
 		assertEquals(toString, order.toString());
 	}
 

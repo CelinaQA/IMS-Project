@@ -56,7 +56,7 @@ public class Item {
 
 
 	public String toString() {
-		return "Item ID: " + id +"\n"+"Name: " + name +"\n"+ "Stock: " + stock +"\n"+ "Price: £" + price;
+		return "Item ID: " + id +"\n"+"Name: " + name +"\n"+ "Stock: " + stock +"\n"+ "Price: £" + price+ "\n";
 	}
 
 	@Override

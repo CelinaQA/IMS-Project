@@ -140,7 +140,7 @@ public class CustomerTest {
 	
 	@Test
 	public void toStringTest() {
-		String toString = "Customer ID: 1"+"\n"+"First name: Chris"+"\n"+ "Surname: Perrins";
+		String toString = "Customer ID: 1"+"\n"+"First name: Chris"+"\n"+ "Surname: Perrins"+ "\n";
 		assertEquals(toString, customer.toString());
 	}
 }

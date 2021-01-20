@@ -156,7 +156,7 @@ public class ItemTest {
 	
 	@Test
 	public void toStringTest() {
-		String toString = "Item ID: 1" +"\n"+"Name: bread" +"\n"+ "Stock: 100" +"\n"+ "Price: £0.99";
+		String toString = "Item ID: 1" +"\n"+"Name: bread" +"\n"+ "Stock: 100" +"\n"+ "Price: £0.99"+ "\n";
 		assertEquals(toString, item.toString());
 	}
 
