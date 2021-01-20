@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,6 +75,26 @@ public static final Logger LOGGER = LogManager.getLogger();
 		order = orderDaoMysql.create(order);
 		Order savedOrder = new Order(100L, 1L, date, 3f, 1L, 3);
 		assertEquals(savedOrder, order);
+	}
+	
+	@Test
+	public void readAllTest() {
+		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
+		List<Order> orders = new ArrayList<>();
+		Date date = Calendar.getInstance().getTime();
+		Order order1 = new Order(100L, 1L, date, 1f, 1L, 1);
+		Order order2 = new Order(101L, 2L, date, 1f, 2L, 1);
+		orders.add(order1);
+		orders.add(order2);
+		orderDaoMysql.create(new Order(1L, 1L, 1));
+		orderDaoMysql.create(new Order(2L, 2L, 1));
+		assertEquals(orders, orderDaoMysql.readAll());
+		
+	}
+	
+	@Test
+	public void updateAddTest() {
+		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
 	}
 
 }
