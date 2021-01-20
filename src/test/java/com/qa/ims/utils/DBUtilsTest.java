@@ -11,22 +11,22 @@ import java.sql.Statement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DBUtils {
-
+public class DBUtilsTest {
+	
 	private static final Logger LOGGER = LogManager.getLogger();
 
 	private final String DB_USER;
 
 	private final String DB_PASS;
 
-	private final String DB_URL = "jdbc:mysql://127.0.0.1:3306/ims?allowMultiQueries=true";
+	private final String DB_URL = "jdbc:mysql://127.0.0.1:3306/ims_test?allowMultiQueries=true";
 
-	private DBUtils(String username, String password) {
+	private DBUtilsTest(String username, String password) {
 		this.DB_USER = username;
 		this.DB_PASS = password;
 
 		try (Connection connection = this.getConnection();
-				BufferedReader br = new BufferedReader(new FileReader("src/main/resources/sql-schema.sql"));) {
+				BufferedReader br = new BufferedReader(new FileReader("src/test/resources/sql-schema.sql"));) {
 			String string;
 			while ((string = br.readLine()) != null) {
 				try (Statement statement = connection.createStatement();) {
@@ -45,16 +45,16 @@ public class DBUtils {
 		return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 	}
 
-	public static DBUtils instance;
+	public static DBUtilsTest instance;
 
-	public static DBUtils getInstance(String username, String password) {
+	public static DBUtilsTest getInstance(String username, String password) {
 		if (instance == null) {
-			instance = new DBUtils(username, password);
+			instance = new DBUtilsTest(username, password);
 		}
 		return instance;
 	}
 
-	public static DBUtils getInstance() {
+	public static DBUtilsTest getInstance() {
 		return instance;
 	} 
 
