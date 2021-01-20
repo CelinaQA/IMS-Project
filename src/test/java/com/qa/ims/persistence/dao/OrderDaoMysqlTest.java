@@ -101,5 +101,18 @@ public static final Logger LOGGER = LogManager.getLogger();
 		Order savedOrder = new Order(100L, 1L, date, 2f);
 		assertEquals(savedOrder, orderDaoMysql.updateAddItem(order, 2L, 1));
 	}
+	
+	@Test
+	public void updateDelTest() {
+		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
+		Date date = Calendar.getInstance().getTime();
+		orderDaoMysql.create(new Order(1L, 1L, 1));
+		Order order = new Order(100L, 1L);
+		orderDaoMysql.updateAddItem(order, 2L, 1);
+		Order savedOrder = new Order(100L, 1L, date, 1f);
+		assertEquals(savedOrder, orderDaoMysql.updateDelItem(order, 2L));
+	}
+	
+	
 
 }
