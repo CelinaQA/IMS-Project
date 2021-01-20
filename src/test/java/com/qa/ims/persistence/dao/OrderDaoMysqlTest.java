@@ -113,6 +113,13 @@ public static final Logger LOGGER = LogManager.getLogger();
 		assertEquals(savedOrder, orderDaoMysql.updateDelItem(order, 2L));
 	}
 	
-	
+	@Test
+	public void deleteTest() {
+		OrderDaoMysql orderDaoMysql = new OrderDaoMysql();
+		orderDaoMysql.create(new Order(1L, 1L, 1));
+		orderDaoMysql.delete(100L);
+		Order order = new Order(0L, 0L, null, 0f);
+		assertEquals(order, orderDaoMysql.readOrder(100L));
+	}
 
 }
