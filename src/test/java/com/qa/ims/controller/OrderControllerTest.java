@@ -60,12 +60,11 @@ public class OrderControllerTest {
 		String customer_id = "1";
 		String item_id = "1";
 		String quantity = "3";
-		//String option = "a";
 		
 		Mockito.doReturn(customer_id,order_id,item_id,quantity).when(orderController).getInput();;
-		Order order = new Order(1L, 1L, 1L, 3);
-		Order savedOrder = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.00f, 1L, 3);
-		Mockito.when(orderServices.updateAddItem(order, 1L, 3)).thenReturn(savedOrder);
+		Order order = new Order(100L, 1L);
+		Order savedOrder = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.00f);
+		Mockito.doReturn(savedOrder).when(orderServices).updateAddItem(order, 1L, 3);
 		assertEquals(savedOrder, orderController.update());
 	}
 	
@@ -75,10 +74,9 @@ public class OrderControllerTest {
 		String order_id = "100";
 		String customer_id = "1";
 		String item_id = "1";
-		//String option = "b";
 		
 		Mockito.doReturn(customer_id,order_id,item_id).when(orderController).getInput();;
-		Order order = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.50f, 1L, 5);
+		Order order = new Order(100L, 1L, Calendar.getInstance().getTime(), 1.50f);
 		Mockito.when(orderServices.updateDelItem(order, 1L)).thenReturn(null);
 		assertEquals(null, orderController.update());
 	}
