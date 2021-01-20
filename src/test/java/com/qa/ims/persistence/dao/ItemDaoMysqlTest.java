@@ -95,5 +95,14 @@ public static final Logger LOGGER = LogManager.getLogger();
 		itemDaoMysql.create(oldItem);
 		assertEquals(newItem, itemDaoMysql.update(newItem));
 	}
+	
+	@Test
+	public void deleteTest() {
+		ItemDaoMysql itemDaoMysql = new ItemDaoMysql();
+		Item item = new Item("bread", 100, 2.99f);
+		itemDaoMysql.create(item);
+		itemDaoMysql.delete(1L);
+		assertEquals(null, itemDaoMysql.readItem(1L));
+	}
 
 }
