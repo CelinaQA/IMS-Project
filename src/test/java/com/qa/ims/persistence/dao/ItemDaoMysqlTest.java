@@ -17,12 +17,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDaoMysqlTest {
+public class ItemDaoMysqlTest {
 	
-	public static final Logger LOGGER = LogManager.getLogger();
+public static final Logger LOGGER = LogManager.getLogger();
 	
 	private static String DB_USER = "root";
 	private static String DB_PASS = "root";
@@ -67,44 +67,24 @@ public class CustomerDaoMysqlTest {
 	
 	@Test
 	public void createTest() {
-		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql();
-		String first_name = "Bob";
-		String last_name = "Jones";
-		Customer customer = new Customer(first_name, last_name);
-		Customer savedCustomer = new Customer(1L, first_name, last_name);
-		customer = customerDaoMysql.create(customer);
-		assertEquals(savedCustomer, customer);
+		ItemDaoMysql itemDaoMysql = new ItemDaoMysql();
+		Item item = new Item("bread", 100, 2.99f);
+		Item savedItem = new Item(1L,"bread", 100, 2.99f);
+		item = itemDaoMysql.create(item);
+		assertEquals(savedItem, item);
 	}
 	
 	@Test
 	public void readAllTest() {
-		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql();
-		List<Customer> customers = new ArrayList<>();
-		Customer customer1 = new Customer(1L,"first", "person");
-		Customer customer2 = new Customer(2L,"second", "person");
-		customers.add(customer1);
-		customers.add(customer2);
-		customerDaoMysql.create(new Customer("first", "person"));
-		customerDaoMysql.create(new Customer("second", "person"));
-		assertEquals(customers, customerDaoMysql.readAll());
+		ItemDaoMysql itemDaoMysql = new ItemDaoMysql();
+		List<Item> items = new ArrayList<>();
+		Item item1 = new Item(1L,"bread", 100, 2.99f);
+		Item item2 = new Item(2L,"cookies", 150, 1.00f);
+		items.add(item1);
+		items.add(item2);
+		itemDaoMysql.create(new Item("bread", 100, 2.99f));
+		itemDaoMysql.create(new Item("cookies", 150, 1.00f));
+		assertEquals(items, itemDaoMysql.readAll());
 	} 
-	
-	@Test
-	public void updateTest() {
-		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql();
-		Customer oldCustomer = new Customer("old", "name");
-		customerDaoMysql.create(oldCustomer);
-		Customer newCustomer = new Customer(1L,"new", "name");
-		assertEquals(newCustomer, customerDaoMysql.update(newCustomer));
-	} 
-	
-	@Test
-	public void deleteTest() {
-		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql();
-		Customer customer = new Customer("first", "person");
-		customerDaoMysql.create(customer);
-		customerDaoMysql.delete(1L);
-		assertEquals(null, customerDaoMysql.readCustomer(1L));
-	} 
-	
+
 }
