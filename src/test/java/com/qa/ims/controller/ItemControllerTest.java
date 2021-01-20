@@ -45,6 +45,7 @@ public class ItemControllerTest {
 		Mockito.doReturn(name, stock, price).when(itemController).getInput();
 		Item item = new Item(name, 20, 3.99f);
 		Item savedItem = new Item(1L, "sugar", 20, 3.99f);
+		System.out.println(itemServices.create(item));
 		Mockito.when(itemServices.create(item)).thenReturn(savedItem);
 		assertEquals(savedItem, itemController.create());
 	}

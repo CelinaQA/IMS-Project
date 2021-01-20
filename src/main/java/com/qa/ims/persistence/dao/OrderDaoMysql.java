@@ -23,10 +23,8 @@ public class OrderDaoMysql implements OrderDao<Order>{
 		Long customer_id = resultSet.getLong("customer_id");
 		Date date_placed = resultSet.getDate("date_placed");
 		Float totalPrice = resultSet.getFloat("SUM(ol.total_price)");
-		Long item_id = resultSet.getLong("item_id");
-		Integer quantity = resultSet.getInt("quantity");
 
-		return new Order(id, customer_id, date_placed, totalPrice, item_id, quantity);
+		return new Order(id, customer_id, date_placed, totalPrice);
 	}
 	
 	//READ FUNCTION--------------------------------------------
@@ -102,7 +100,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 			LOGGER.debug(e.getStackTrace());
 			LOGGER.error(e.getMessage());
 		}
-		return null;
+		return null; 
 	}
 	
 	//UPDATE FUNCTIONS-----------------------------------------
