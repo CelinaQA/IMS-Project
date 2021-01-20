@@ -59,7 +59,7 @@ public class CustomerDaoMysqlTest {
 	
 	@Test
 	public void createTest() {
-		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql(DB_URL, DB_USER, DB_PASS);
+		CustomerDaoMysql customerDaoMysql = new CustomerDaoMysql();
 		String first_name = "Bob";
 		String last_name = "Jones";
 		Customer customer = new Customer(first_name, last_name);
