@@ -86,5 +86,14 @@ public static final Logger LOGGER = LogManager.getLogger();
 		itemDaoMysql.create(new Item("cookies", 150, 1.00f));
 		assertEquals(items, itemDaoMysql.readAll());
 	} 
+	
+	@Test
+	public void updateTest() {
+		ItemDaoMysql itemDaoMysql = new ItemDaoMysql();
+		Item oldItem = new Item("bread", 100, 2.99f);
+		Item newItem = new Item(1L,"oranges", 200, 0.99f);
+		itemDaoMysql.create(oldItem);
+		assertEquals(newItem, itemDaoMysql.update(newItem));
+	}
 
 }
