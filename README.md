@@ -14,9 +14,11 @@ These instructions will get you a copy of the project up and running on your loc
 You will need to have Java and Git Bash installed on your computer to run the IMS.  
   
 For Java: https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html  
-For Git Bash: https://git-scm.com/download/win
+For Git Bash: https://git-scm.com/download/win  
+  
+To run the tests, you will need to have Eclipse workspace installed.  
 
-
+For Eclipse: https://www.eclipse.org/downloads/
 
 ### Installing
 
@@ -30,14 +32,79 @@ See Deployment section for additional information on running the IMS from Git Ba
 
 ## Running the tests
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+To run the tests, open the project on Eclipse workspace.  Right click on the project and select Coverage As -> JUnit Test.
 
 ### Unit Tests 
+Unit tests are run to ensure that each 'unit' of an application is functioning as they are intended to.  These can be made for individual classes and a test should be made for all the methods and attributes that make up each class.  
 
-Explain what these tests test, why and how to run them
+Example of a class to be tested:
 
 ```
-Give an example
+public class ItemServices implements CrudServices<Item>{
+
+	private Dao<Item> itemDao;
+	
+	public ItemServices(Dao<Item> itemDao) {
+		this.itemDao = itemDao;
+	}
+
+	public List<Item> readAll() {
+		return itemDao.readAll();
+	}
+
+	public Item create(Item item) {
+		return itemDao.create(item);
+	}
+
+	public Item update(Item item) {
+		return itemDao.update(item);
+	}
+
+	public void delete(Long id) {
+		itemDao.delete(id);
+	}
+
+}
+```
+Example of tests for the class above:
+
+```
+@RunWith(MockitoJUnitRunner.class)
+public class ItemServicesTest {
+	
+	@Mock
+	private Dao<Item> itemDao;
+	
+	@InjectMocks
+	private ItemServices itemServices;
+	
+	@Test
+	public void itemServicesCreate() {
+		Item item = new Item("bread", 100, 0.99f);
+		itemServices.create(item);
+		Mockito.verify(itemDao, Mockito.times(1)).create(item);
+	}
+	
+	@Test
+	public void itemServicesRead() {
+		itemServices.readAll();
+		Mockito.verify(itemDao, Mockito.times(1)).readAll();
+	}
+	
+	@Test
+	public void itemServicesUpdate() {
+		Item item = new Item("bread", 100, 0.99f);
+		itemServices.update(item);
+		Mockito.verify(itemDao, Mockito.times(1)).update(item);
+	}
+	
+	@Test
+	public void itemServicesDelete() {
+		itemServices.delete(1L);;
+		Mockito.verify(itemDao, Mockito.times(1)).delete(1L);
+	}
+
+}
 ```
 
 ### Integration Tests 
@@ -57,14 +124,14 @@ Give an example
 
 ## Deployment
 
-Before deploying the project, make sure that the GCP instance the IMS connects to is running.  
+Before deploying the project, make sure that the GCP instance the IMS connects to is running.  Navigate to the folder containing the Git repository which you cloned in the Installation step using Git Bash.  
 
-Next, to execute the fat .jar file enter the command:
+To launch the IMS from the command line enter the following command:
 
 ```
 $ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
 ```
-You will then be prompted to enter a username and password before you get access to the database.  After this, you can choose to create, read, update or delete customers, items and orders.  At least one customer and item must be present in the database before an order can be created, and before a customer or item can be deleted, the orders in which they are present in must be deleted first.  
+You will then be prompted to enter a username and password before you can access the database.  After this, you can choose to create, read, update or delete customers, items and orders.  At least one customer and item must be present in the database before an order can be created, and before a customer or item can be deleted, the orders in which they are present in must be deleted first.  
 
 Example output for customers:  
 ```
