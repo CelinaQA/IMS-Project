@@ -108,10 +108,41 @@ public class ItemServicesTest {
 ```
 
 ### Integration Tests 
-Explain what these tests test, why and how to run them
+Integration tests are run to check that the communication between different objects is happening correctly.  For this IMS, a controller class is used to call the relevant service class, which in turn calls the data access object class.  To test each relationship, Mockito is used to mock the function of the class that is being called.  
+For example, an item controller class calls an item service class to execute different methods.  Below is the read all method in the item controller class:   
 
 ```
-Give an example
+
+@Override
+	public List<Item> readAll() {
+		List<Item> items = itemService.readAll();
+		for (Item item : items) {
+			LOGGER.info(item.toString());
+		}
+		return items;
+	}
+	
+```
+To test that the item service class is being called correctly and returning what we should expect, Mockito 'mocks' the item service class (denoted by @Mock) and this is 'injected' into the item controller class (denoted by @InjectMocks), which we are testing.  We only need to mock the item service class since we are only checking the interaction between the controller and service class rather than the functionality of the service class.  Since we know what the item service class should return, we can provide what Mockito returns when the service class is called and then use assertEquals to check that the result matches what is expected from the controller.  
+Below is an example of a test for an item controller for the read all method:  
+```
+	@Mock
+	private ItemServices itemServices;
+	
+	@Spy
+	@InjectMocks
+	private ItemController itemController;
+	
+	@Test
+	public void readAllTest() {
+		ItemController itemController = new ItemController(itemServices);
+		List<Item> items = new ArrayList<>();
+		items.add(new Item("bread", 100, 1.99f));
+		items.add(new Item("cookies", 50, 5f));
+		items.add(new Item("chocolate", 200, 10f));
+		Mockito.when(itemServices.readAll()).thenReturn(items);
+		assertEquals(items, itemController.readAll());
+	}
 ```
 
 ### And coding style tests
