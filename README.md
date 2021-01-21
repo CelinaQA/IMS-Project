@@ -143,7 +143,7 @@ Below is an example of a test for an item controller for the read all method:
 		assertEquals(items, itemController.readAll());
 	}
 ```
-To test that the item service class is being called correctly and returning what we should expect, Mockito 'mocks' the item service class (denoted by @Mock) and this is 'injected' into the item controller class (denoted by @InjectMocks), which we are testing.  We only need to mock the item service class since we are only checking the interaction between the controller and service class rather than the functionality of the service class.  Since we know what the item service class should return, we can provide what Mockito returns when the service class is called and then use assertEquals to check that the result matches what is expected from the controller.    
+To test that the item service class is being called correctly and returning what we should expect, Mockito 'mocks' the item service class (denoted by `@Mock`) and this is 'injected' into the item controller class (denoted by `@InjectMocks`), which we are testing.  We only need to mock the item service class since we are only checking the interaction between the controller and service class rather than the functionality of the service class.  Since we know what the item service class should return, we can provide what Mockito returns when the service class is called and then use assertEquals to check that the result matches what is expected from the controller.    
 
 
 ## Deployment
@@ -153,7 +153,7 @@ Before deploying the project, make sure that the GCP instance the IMS connects t
 To launch the IMS from the command line enter the following command:
 
 ```
-$ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
+$ java -jar celina-ims-0.0.1-jar-with-dependencies.jar
 ```
 You will then be prompted to enter a username and password before you can access the database.  After this, you can choose to create, read, update or delete customers, items and orders.  At least one customer and item must be present in the database before an order can be created, and before a customer or item can be deleted, the orders in which they are present in must be deleted first.  
 
