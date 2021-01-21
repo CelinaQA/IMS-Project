@@ -1,4 +1,4 @@
-Coverage: 80.4%  
+## Coverage: 80.4%  
 ![Coverage screenshot](https://github.com/CelinaQA/celina-ims/blob/UMLFeature/Coverage.png)
 
 # Inventory Management System (IMS)
@@ -11,24 +11,26 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-You will need to have Java installed on your computer to run the IMS.  You can find the download link at https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html under Java SE Development Kit 14.0.1.
+You will need to have Java and Git Bash installed on your computer to run the IMS.  
+  
+For Java: https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html  
+For Git Bash: https://git-scm.com/download/win
 
 
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
+To be able to run this project from Git Bash, open Git Bash in an empty folder you want to save the repository in and run the following command:
 
 
 ```
-Give the example
+$ git clone https://github.com/CelinaQA/celina-ims.git
 ```
 
-And repeat
+Next, to execute the fat .jar file enter the command:
 
 ```
-until finished
+$ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
