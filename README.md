@@ -123,7 +123,6 @@ For example, an item controller class calls an item service class to execute dif
 	}
 	
 ```
-To test that the item service class is being called correctly and returning what we should expect, Mockito 'mocks' the item service class (denoted by @Mock) and this is 'injected' into the item controller class (denoted by @InjectMocks), which we are testing.  We only need to mock the item service class since we are only checking the interaction between the controller and service class rather than the functionality of the service class.  Since we know what the item service class should return, we can provide what Mockito returns when the service class is called and then use assertEquals to check that the result matches what is expected from the controller.  
 Below is an example of a test for an item controller for the read all method:  
 ```
 	@Mock
@@ -144,14 +143,8 @@ Below is an example of a test for an item controller for the read all method:
 		assertEquals(items, itemController.readAll());
 	}
 ```
+To test that the item service class is being called correctly and returning what we should expect, Mockito 'mocks' the item service class (denoted by @Mock) and this is 'injected' into the item controller class (denoted by @InjectMocks), which we are testing.  We only need to mock the item service class since we are only checking the interaction between the controller and service class rather than the functionality of the service class.  Since we know what the item service class should return, we can provide what Mockito returns when the service class is called and then use assertEquals to check that the result matches what is expected from the controller.    
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
 
 ## Deployment
 
