@@ -22,12 +22,11 @@ For Git Bash: https://git-scm.com/download/win
 
 To be able to run this project from Git Bash, open Git Bash in an empty folder you want to save the repository in and run the following command:
 
-
 ```
 $ git clone https://github.com/CelinaQA/celina-ims.git
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+See Deployment section for additional information on running the IMS from Git Bash.
 
 ## Running the tests
 
@@ -65,7 +64,42 @@ Next, to execute the fat .jar file enter the command:
 ```
 $ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
 ```
+You will then be prompted to enter a username and password before you get access to the database.  After this, you can choose to create, read, update or delete customers, items and orders.  At least one customer and item must be present in the database before an order can be created, and before a customer or item can be deleted, the orders in which they are present in must be deleted first.  
 
+Example output for customers:  
+```
+Customer ID: 1
+First name: first
+Surname: person
+
+Customer ID: 2
+First name: second
+Surname: person
+```
+Example output for items:  
+```
+Item ID: 1
+Name: bread
+Stock: 100
+Price: £1.0
+
+Item ID: 2
+Name: cookies
+Stock: 100
+Price: £2.0
+```
+Example output for orders:  
+```
+Order ID = 101
+Customer ID = 1
+Date placed = 2021-01-21
+Total price: £5.0
+
+Order ID = 102
+Customer ID = 2
+Date placed = 2021-01-21
+Total price: £10.0
+```
 ## Built With
 
 * [Maven](https://maven.apache.org/) - Dependency Management
@@ -89,4 +123,4 @@ This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md
 * Hat tip to anyone whose code was used
 * Inspiration
 * etc
-# celina-ims
+
