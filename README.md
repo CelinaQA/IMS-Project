@@ -3,7 +3,7 @@
 
 # Inventory Management System (IMS)
 
-One Paragraph of project description goes here
+This Inventory Management System (IMS) is designed so that an end user can interact with it via a Command-Line Interface (CLI).  A user will be able to store details of customers, items and orders in a database connected to a Google Cloud Platform (GCP) instance, with full CRUD capabilities. 
 
 ## Getting Started
 
@@ -25,12 +25,6 @@ To be able to run this project from Git Bash, open Git Bash in an empty folder y
 
 ```
 $ git clone https://github.com/CelinaQA/celina-ims.git
-```
-
-Next, to execute the fat .jar file enter the command:
-
-```
-$ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
 ```
 
 End with an example of getting some data out of the system or using it for a little demo
@@ -64,7 +58,13 @@ Give an example
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Before deploying the project, make sure that the GCP instance the IMS connects to is running.  
+
+Next, to execute the fat .jar file enter the command:
+
+```
+$ java -jar target/celina-ims-0.0.1-jar-with-dependencies.jar
+```
 
 ## Built With
 
