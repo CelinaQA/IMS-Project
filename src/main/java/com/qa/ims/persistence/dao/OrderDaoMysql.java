@@ -33,7 +33,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id GROUP BY o.order_id ORDER BY o.order_id;");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id GROUP BY o.order_id ORDER BY o.order_id;");) {
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
@@ -49,7 +49,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,i.item_id,ol.quantity,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1);");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,o.order_id,o.customer_id,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=(SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1) GROUP BY o.order_id;");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -62,7 +62,7 @@ public class OrderDaoMysql implements OrderDao<Order>{
 	public Order readOrder(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,ol.order_id,o.customer_id,i.item_id,ol.quantity,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id+";");) {
+				ResultSet resultSet = statement.executeQuery("SELECT o.date_placed,ol.order_id,o.customer_id,SUM(ol.total_price) from orderlines ol JOIN orders o ON o.order_id=ol.order_id JOIN items i ON i.item_id=ol.item_id WHERE o.order_id=" + id+";");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
