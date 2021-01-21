@@ -68,5 +68,4 @@ public class ItemController implements CrudController<Item>{
 		LOGGER.info("Item deleted");
 	}
 	
-
 }
