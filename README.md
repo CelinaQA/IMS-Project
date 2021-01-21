@@ -1,5 +1,7 @@
-Coverage: 34%
-# Project Title
+Coverage: 80.4%
+!https://github.com/CelinaQA/celina-ims/blob/UMLFeature/Coverage.png
+
+# Inventory Management System (IMS)
 
 One Paragraph of project description goes here
 
@@ -9,17 +11,15 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will need to have Java installed on your computer to run the IMS.  You can find the download link at https://www.oracle.com/java/technologies/javase/jdk14-archive-downloads.html under Java SE Development Kit 14.0.1.
 
-```
-Give examples
-```
+
 
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
+
 
 ```
 Give the example
