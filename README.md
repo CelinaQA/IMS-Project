@@ -1,5 +1,5 @@
 ## Coverage: 80.4%  
-![Coverage screenshot](https://github.com/CelinaQA/celina-ims/blob/UMLFeature/Coverage.png)
+![Coverage screenshot](https://github.com/CelinaQA/celina-ims/blob/main/Documentation/CoverageScreenshot.png)
 
 # Inventory Management System (IMS)
 
